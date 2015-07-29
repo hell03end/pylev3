@@ -1,6 +1,18 @@
 pylev
 =====
 
+.. image:: https://secure.travis-ci.org/toastdriven/pylev.png
+   :target: http://travis-ci.org/toastdriven/pylev
+   :height: 20
+
+.. image:: https://img.shields.io/pypi/v/pylev.svg
+   :target: https://pypi.python.org/pypi/pylev
+   :height: 20
+
+.. image:: https://img.shields.io/pypi/dm/pylev.svg
+   :target: https://pypi.python.org/pypi/pylev
+   :height: 20
+
 A pure Python Levenshtein implementation that's not freaking GPL'd.
 
 Based off the Wikipedia code samples at
@@ -42,10 +54,6 @@ Setup::
 Running::
 
     $ python -m unittest tests
-
-.. image:: https://secure.travis-ci.org/toastdriven/pylev.png
-   :target: http://travis-ci.org/toastdriven/pylev
-
 
 Version History
 ---------------
