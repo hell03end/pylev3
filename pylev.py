@@ -23,7 +23,7 @@ __license__ = 'New BSD'
 
 
 import sys
-PY2 = sys.version_info[0] == 2
+PY2 = sys.version < "3"
 
 if PY2:
     range = xrange
@@ -152,6 +152,9 @@ def wf_levenshtein(string_1, string_2):
 
     return d[-1]
 
+tmp0 = list(range(1000))
+tmp1 = list(range(1000))
+
 
 def wfi_levenshtein(string_1, string_2):
     """
@@ -184,8 +187,8 @@ def wfi_levenshtein(string_1, string_2):
         string_2, string_1 = string_1, string_2
         len_2, len_1 = len_1, len_2
 
-    d0 = [i for i in range(len_2 + 1)]
-    d1 = [j for j in range(len_2 + 1)]
+    d0 = list(range(len_2 + 1))
+    d1 = list(range(len_2 + 1))
 
     for i in range(len_1):
         d1[0] = i + 1
@@ -211,6 +214,84 @@ def wfi_levenshtein(string_1, string_2):
         d0, d1 = d1, d0
 
     return d0[len_2]
+
+
+# experiment to reduce allocations
+tmp0 = list(range(32))
+tmp1 = list(range(32))
+
+
+def expanded_wfi_levenshtein(string_1, string_2):
+    if string_1 == string_2:
+        return 0
+
+    len_1 = len(string_1)
+    len_2 = len(string_2)
+
+    if len_1 == 0:
+        return len_2
+    if len_2 == 0:
+        return len_1
+
+    if len_1 > len_2:
+        string_2, string_1 = string_1, string_2
+        len_2, len_1 = len_1, len_2
+
+    d0 = tmp0
+    d1 = tmp1
+
+    for i in range(len_2 + 1):
+        d0[i] = d1[i] = i
+
+    i = 0
+    while True:
+        d1[0] = i + 1
+        for j in range(len_2):
+            cost = d0[j]
+
+            if string_1[i] != string_2[j]:
+                # substitution
+                cost += 1
+
+                # insertion
+                x_cost = d1[j] + 1
+                if x_cost < cost:
+                    cost = x_cost
+
+                # deletion
+                y_cost = d0[j + 1] + 1
+                if y_cost < cost:
+                    cost = y_cost
+
+            d1[j + 1] = cost
+
+        i += 1
+        if i >= len_1:
+            return d1[len_2]
+
+        d0[0] = i + 1
+        for j in range(len_2):
+            cost = d1[j]
+
+            if string_1[i] != string_2[j]:
+                # substitution
+                cost += 1
+
+                # insertion
+                x_cost = d0[j] + 1
+                if x_cost < cost:
+                    cost = x_cost
+
+                # deletion
+                y_cost = d1[j + 1] + 1
+                if y_cost < cost:
+                    cost = y_cost
+
+            d0[j + 1] = cost
+
+        i += 1
+        if i >= len_1:
+            return d0[len_2]
 
 
 def damerau_levenshtein(string_1, string_2):
