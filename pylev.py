@@ -210,7 +210,7 @@ def wfi_levenshtein(string_1, string_2):
 
         d0, d1 = d1, d0
 
-    return d0[-1]
+    return d0[len_2]
 
 
 def damerau_levenshtein(string_1, string_2):
@@ -283,7 +283,7 @@ def damerau_levenshtein(string_1, string_2):
 
         dprev, d0, d1 = d0, d1, dprev
 
-    return d0[-1]
+    return d0[len_2]
 
 
 levenshtein = wfi_levenshtein
