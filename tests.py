@@ -59,7 +59,7 @@ test_functions = [
 for lev_fn, data in itertools.product(test_functions, test_data):
     name, a, b, expected = data
     test_fn = _mk_test_fn(lev_fn, a, b, expected)
-    setattr(Tests, "test_%s_%s" % (name, lev_fn.__name__), test_fn)
+    setattr(Tests, "test_{}_{}".format(name, lev_fn.__name__), test_fn)
 
 
 if __name__ == '__main__':
