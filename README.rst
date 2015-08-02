@@ -22,7 +22,7 @@ http://en.wikipedia.org/wiki/Levenshtein_distance.
 Requirements
 ------------
 
-* Python 2.7.X, Python 3.3+ or PyPy 1.6.0+
+* Python 2.6.X, Python 3.2+ or PyPy 1.6.0+
 
 
 Usage
