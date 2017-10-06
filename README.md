@@ -1,5 +1,5 @@
 # pylev (fork)
-![ci](https://secure.travis-ci.org/hell03end/pylev.png)
+[![Build Status](https://travis-ci.org/hell03end/pylev.svg?branch=master)](https://travis-ci.org/hell03end/pylev)
 
 A pure Python Levenshtein implementation that's not freaking GPL'd.
 
