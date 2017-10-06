@@ -1,12 +1,34 @@
-language: python
+os: linux
+dist: trusty
 sudo: false
+language: python
 python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
   - "3.3"
   - "3.4"
-  - "pypy"
+  - "3.5"
+  - "3.6"
+  - "3.6-dev"
+  - "nightly"
   - "pypy3"
+cache:
+  pip: true  # caches $HOME/.cache/pip
+
+branches:
+  only:
+  - master
+
+env:
+matrix:
+  allow_failures:
+  - python: "pypy3"
+
+notifications:
+  email:
+    recipients:
+      - hell03end@outlook.com
+    on_success: never
+    on_failure: always
+    on_start: never
+
 # command to run tests
 script: "python tests.py"

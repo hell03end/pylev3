@@ -1,293 +1,302 @@
 """
-pylev
-=====
+    pylev (fork by hell03end)
+    =====
 
-A pure Python Levenshtein implementation that's not freaking GPL'd.
+    A Python Levenshtein OOP implementation that's not freaking GPL'd.
 
-Based off the Wikipedia code samples at
-http://en.wikipedia.org/wiki/Levenshtein_distance.
+    Based off the Wikipedia code samples at
+    http://en.wikipedia.org/wiki/Levenshtein_distance.
+    Original version: https://github.com/toastdriven/pylev.
 
-Usage
------
+    Usage
+    -----
 
-Usage is fairly straightforward.::
+    Usage is fairly straightforward:
 
-    import pylev
-    distance = pylev.levenshtein('kitten', 'sitting')
-    assert(distance, 3)
-
+        from pylev import Levenshtein
+        >>> Levenshtein().wf('kitten', 'sitting')
+        3
 """
-__author__ = 'Daniel Lindsley'
-__version__ = (1, 3, 0)
+
+__author__ = ('Daniel Lindsley', 'hell03end')
+__version__ = (1, 3, 1)
 __license__ = 'New BSD'
 
 
-import sys
-PY2 = sys.version_info[0] == 2
+class Levenshtein(object):
+    def __init__(self):
+        super(Levenshtein, self).__init__()
 
-if PY2:
-    range = xrange
+    def classic(self, string_1: str, string_2: str) -> int:
+        """
+            Calculates the Levenshtein distance between two strings.
 
+            This version is easier to read, but significantly slower than the
+            version below (up to several orders of magnitude). Useful for
+            learning, less so otherwise.
 
-def classic_levenshtein(string_1, string_2):
-    """
-    Calculates the Levenshtein distance between two strings.
+            Usage::
+                >>> Levenshtein().classic('kitten', 'sitting')
+                3
+                >>> Levenshtein().classic('kitten', 'kitten')
+                0
+                >>> Levenshtein().classic('', '')
+                0
+                >>> Levenshtein().classic('', 'abc')
+                3
+        """
+        if string_1 == string_2:
+            return 0
 
-    This version is easier to read, but significantly slower than the version
-    below (up to several orders of magnitude). Useful for learning, less so
-    otherwise.
+        len_1 = len(string_1)
+        len_2 = len(string_2)
+        cost = 0
 
-    Usage::
+        if len_1 and len_2 and string_1[0] != string_2[0]:
+            cost = 1
 
-        >>> classic_levenshtein('kitten', 'sitting')
-        3
-        >>> classic_levenshtein('kitten', 'kitten')
-        0
-        >>> classic_levenshtein('', '')
-        0
-
-    """
-    len_1 = len(string_1)
-    len_2 = len(string_2)
-    cost = 0
-
-    if len_1 and len_2 and string_1[0] != string_2[0]:
-        cost = 1
-
-    if len_1 == 0:
-        return len_2
-    elif len_2 == 0:
-        return len_1
-    else:
+        if not len_1:
+            return len_2
+        elif not len_2:
+            return len_1
         return min(
-            classic_levenshtein(string_1[1:], string_2) + 1,
-            classic_levenshtein(string_1, string_2[1:]) + 1,
-            classic_levenshtein(string_1[1:], string_2[1:]) + cost,
+            self.classic(string_1[1:], string_2) + 1,
+            self.classic(string_1, string_2[1:]) + 1,
+            self.classic(string_1[1:], string_2[1:]) + cost,
         )
 
+    def recursive(self, string_1: str, string_2: str, len_1: int=None,
+                  len_2: int=None, offset_1: int=0, offset_2: int=0,
+                  memo: int=None) -> int:
+        """
+            Calculates the Levenshtein distance between two strings.
 
-def recursive_levenshtein(string_1, string_2, len_1=None, len_2=None, offset_1=0, offset_2=0, memo=None):
-    """
-    Calculates the Levenshtein distance between two strings.
+            Usage::
+                >>> Levenshtein().recursive('kitten', 'sitting')
+                3
+                >>> Levenshtein().recursive('kitten', 'kitten')
+                0
+                >>> Levenshtein().recursive('', '')
+                0
+                >>> Levenshtein().classic('', 'abc')
+                3
+        """
+        if string_1 == string_2:
+            return 0
 
-    Usage::
+        if len_1 is None:
+            len_1 = len(string_1)
+        if len_2 is None:
+            len_2 = len(string_2)
+        if memo is None:
+            memo = {}
 
-        >>> recursive_levenshtein('kitten', 'sitting')
-        3
-        >>> recursive_levenshtein('kitten', 'kitten')
-        0
-        >>> recursive_levenshtein('', '')
-        0
+        key = (offset_1, len_1, offset_2, len_2)
+        cost = 0
 
-    """
-    if len_1 is None:
+        if memo.get(key, False):
+            return memo[key]
+
+        if not len_1:
+            return len_2
+        elif not len_2:
+            return len_1
+
+        if string_1[offset_1] != string_2[offset_2]:
+            cost = 1
+
+        dist = min(
+            self.recursive(string_1, string_2, len_1 - 1, len_2,
+                           offset_1 + 1, offset_2, memo) + 1,
+            self.recursive(string_1, string_2, len_1, len_2 - 1,
+                           offset_1, offset_2 + 1, memo) + 1,
+            self.recursive(string_1, string_2, len_1 - 1, len_2 - 1,
+                           offset_1 + 1, offset_2 + 1, memo) + cost
+        )
+        memo[key] = dist
+        return dist
+
+    @staticmethod
+    def wf(string_1: str, string_2: str) -> int:
+        """
+            Calculates the Levenshtein distance between two strings.
+
+            This version uses the Wagner-Fischer algorithm.
+
+            Usage::
+                >>> Levenshtein().wf('kitten', 'sitting')
+                3
+                >>> Levenshtein().wf('kitten', 'kitten')
+                0
+                >>> Levenshtein().wf('', '')
+                0
+                >>> Levenshtein().classic('', 'abc')
+                3
+        """
+
+        if string_1 == string_2:
+            return 0
+
+        len_1 = len(string_1) + 1
+        len_2 = len(string_2) + 1
+
+        if not len_1 - 1:
+            return len_2
+        if not len_2 - 1:
+            return len_1
+
+        d = [0] * (len_1 * len_2)
+
+        for i in range(len_1):
+            d[i] = i
+        for j in range(len_2):
+            d[j * len_1] = j
+
+        for j in range(1, len_2):
+            for i in range(1, len_1):
+                if string_1[i - 1] == string_2[j - 1]:
+                    d[i + j * len_1] = d[i - 1 + (j - 1) * len_1]
+                else:
+                    d[i + j * len_1] = min(
+                        d[i - 1 + j * len_1] + 1,        # deletion
+                        d[i + (j - 1) * len_1] + 1,      # insertion
+                        d[i - 1 + (j - 1) * len_1] + 1,  # substitution
+                    )
+        return d[-1]
+
+    @staticmethod
+    def wfi(string_1: str, string_2: str) -> int:
+        """
+            Calculates the Levenshtein distance between two strings.
+
+            This version uses an iterative version of the
+            Wagner-Fischer algorithm.
+
+            Usage::
+                >>> Levenshtein().wfi('kitten', 'sitting')
+                3
+                >>> Levenshtein().wfi('kitten', 'kitten')
+                0
+                >>> Levenshtein().wfi('', '')
+                0
+                >>> Levenshtein().classic('', 'abc')
+                3
+        """
+        if string_1 == string_2:
+            return 0
+
         len_1 = len(string_1)
-
-    if len_2 is None:
         len_2 = len(string_2)
 
-    if memo is None:
-        memo = {}
+        if not len_1:
+            return len_2
+        if not len_2:
+            return len_1
 
-    key = ','.join([str(offset_1), str(len_1), str(offset_2), str(len_2)])
+        if len_1 > len_2:
+            string_2, string_1 = string_1, string_2
+            len_2, len_1 = len_1, len_2
 
-    if memo.get(key) is not None:
-        return memo[key]
+        d0 = [i for i in range(len_2 + 1)]
+        d1 = [j for j in range(len_2 + 1)]
 
-    if len_1 == 0:
-        return len_2
-    elif len_2 == 0:
-        return len_1
+        for i in range(len_1):
+            d1[0] = i + 1
+            for j in range(len_2):
+                cost = d0[j]
+                if string_1[i] != string_2[j]:
+                    # substitution
+                    cost += 1
+                    # insertion
+                    x_cost = d1[j] + 1
+                    if x_cost < cost:
+                        cost = x_cost
+                    # deletion
+                    y_cost = d0[j + 1] + 1
+                    if y_cost < cost:
+                        cost = y_cost
+                d1[j + 1] = cost
+            d0, d1 = d1, d0
+        return d0[-1]
 
-    cost = 0
+    @staticmethod
+    def damerau(string_1: str, string_2: str) -> int:
+        """
+            Calculates the Damerau-Levenshtein distance between two strings.
 
-    if string_1[offset_1] != string_2[offset_2]:
-        cost = 1
+            In addition to insertions, deletions and substitutions,
+            Damerau-Levenshtein considers adjacent transpositions.
 
-    dist = min(
-        recursive_levenshtein(string_1, string_2, len_1 - 1, len_2, offset_1 + 1, offset_2, memo) + 1,
-        recursive_levenshtein(string_1, string_2, len_1, len_2 - 1, offset_1, offset_2 + 1, memo) + 1,
-        recursive_levenshtein(string_1, string_2, len_1 - 1, len_2 - 1, offset_1 + 1, offset_2 + 1, memo) + cost,
-    )
-    memo[key] = dist
-    return dist
+            This version is based on an iterative version of the
+            Wagner-Fischer algorithm.
 
+            Usage::
+                >>> Levenshtein().damerau('kitten', 'sitting')
+                3
+                >>> Levenshtein().damerau('kitten', 'kittne')
+                1
+                >>> Levenshtein().damerau('', '')
+                0
+                >>> Levenshtein().classic('', 'abc')
+                3
+        """
+        if string_1 == string_2:
+            return 0
 
-def wf_levenshtein(string_1, string_2):
-    """
-    Calculates the Levenshtein distance between two strings.
+        len_1 = len(string_1)
+        len_2 = len(string_2)
 
-    This version uses the Wagner-Fischer algorithm.
+        if len_1 == 0:
+            return len_2
+        if len_2 == 0:
+            return len_1
 
-    Usage::
+        if len_1 > len_2:
+            string_2, string_1 = string_1, string_2
+            len_2, len_1 = len_1, len_2
 
-        >>> wf_levenshtein('kitten', 'sitting')
-        3
-        >>> wf_levenshtein('kitten', 'kitten')
-        0
-        >>> wf_levenshtein('', '')
-        0
+        prev_cost = 0
+        d0 = [i for i in range(len_2 + 1)]
+        d1 = [j for j in range(len_2 + 1)]
+        dprev = d0[:]
 
-    """
-    len_1 = len(string_1) + 1
-    len_2 = len(string_2) + 1
+        s1 = string_1
+        s2 = string_2
 
-    d = [0] * (len_1 * len_2)
-
-    for i in range(len_1):
-        d[i] = i
-    for j in range(len_2):
-        d[j * len_1] = j
-
-    for j in range(1, len_2):
-        for i in range(1, len_1):
-            if string_1[i - 1] == string_2[j - 1]:
-                d[i + j * len_1] = d[i - 1 + (j - 1) * len_1]
-            else:
-                d[i + j * len_1] = min(
-                   d[i - 1 + j * len_1] + 1,        # deletion
-                   d[i + (j - 1) * len_1] + 1,      # insertion
-                   d[i - 1 + (j - 1) * len_1] + 1,  # substitution
-                )
-
-    return d[-1]
-
-
-def wfi_levenshtein(string_1, string_2):
-    """
-    Calculates the Levenshtein distance between two strings.
-
-    This version uses an iterative version of the Wagner-Fischer algorithm.
-
-    Usage::
-
-        >>> wfi_levenshtein('kitten', 'sitting')
-        3
-        >>> wfi_levenshtein('kitten', 'kitten')
-        0
-        >>> wfi_levenshtein('', '')
-        0
-
-    """
-    if string_1 == string_2:
-        return 0
-
-    len_1 = len(string_1)
-    len_2 = len(string_2)
-
-    if len_1 == 0:
-        return len_2
-    if len_2 == 0:
-        return len_1
-
-    if len_1 > len_2:
-        string_2, string_1 = string_1, string_2
-        len_2, len_1 = len_1, len_2
-
-    d0 = [i for i in range(len_2 + 1)]
-    d1 = [j for j in range(len_2 + 1)]
-
-    for i in range(len_1):
-        d1[0] = i + 1
-        for j in range(len_2):
-            cost = d0[j]
-
-            if string_1[i] != string_2[j]:
-                # substitution
-                cost += 1
-
-                # insertion
-                x_cost = d1[j] + 1
-                if x_cost < cost:
-                    cost = x_cost
-
-                # deletion
-                y_cost = d0[j + 1] + 1
-                if y_cost < cost:
-                    cost = y_cost
-
-            d1[j + 1] = cost
-
-        d0, d1 = d1, d0
-
-    return d0[-1]
+        for i in range(len_1):
+            d1[0] = i + 1
+            for j in range(len_2):
+                cost = d0[j]
+                if s1[i] != s2[j]:
+                    # substitution
+                    cost += 1
+                    # insertion
+                    x_cost = d1[j] + 1
+                    if x_cost < cost:
+                        cost = x_cost
+                    # deletion
+                    y_cost = d0[j + 1] + 1
+                    if y_cost < cost:
+                        cost = y_cost
+                    # transposition
+                    if i > 0 and j > 0 and s1[i] == s2[j - 1] \
+                            and s1[i - 1] == s2[j]:
+                        transp_cost = dprev[j - 1] + 1
+                        if transp_cost < cost:
+                            cost = transp_cost
+                d1[j + 1] = cost
+            dprev, d0, d1 = d0, d1, dprev
+        return d0[-1]
 
 
-def damerau_levenshtein(string_1, string_2):
-    """
-    Calculates the Damerau-Levenshtein distance between two strings.
-
-    In addition to insertions, deletions and substitutions,
-    Damerau-Levenshtein considers adjacent transpositions.
-
-    This version is based on an iterative version of the Wagner-Fischer algorithm.
-
-    Usage::
-
-        >>> damerau_levenshtein('kitten', 'sitting')
-        3
-        >>> damerau_levenshtein('kitten', 'kittne')
-        1
-        >>> damerau_levenshtein('', '')
-        0
-
-    """
-    if string_1 == string_2:
-        return 0
-
-    len_1 = len(string_1)
-    len_2 = len(string_2)
-
-    if len_1 == 0:
-        return len_2
-    if len_2 == 0:
-        return len_1
-
-    if len_1 > len_2:
-        string_2, string_1 = string_1, string_2
-        len_2, len_1 = len_1, len_2
-
-    prev_cost = 0
-    d0 = [i for i in range(len_2 + 1)]
-    d1 = [j for j in range(len_2 + 1)]
-    dprev = d0[:]
-
-    s1 = string_1
-    s2 = string_2
-
-    for i in range(len_1):
-        d1[0] = i + 1
-        for j in range(len_2):
-            cost = d0[j]
-
-            if s1[i] != s2[j]:
-                # substitution
-                cost += 1
-
-                # insertion
-                x_cost = d1[j] + 1
-                if x_cost < cost:
-                    cost = x_cost
-
-                # deletion
-                y_cost = d0[j + 1] + 1
-                if y_cost < cost:
-                    cost = y_cost
-
-                # transposition
-                if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j]:
-                    transp_cost = dprev[j - 1] + 1
-                    if transp_cost < cost:
-                        cost = transp_cost
-            d1[j + 1] = cost
-
-        dprev, d0, d1 = d0, d1, dprev
-
-    return d0[-1]
+# for backward-compatibilty with original pylev
+classic_levenshtein = Levenshtein().classic
+recursive_levenshtein = Levenshtein().recursive
+wf_levenshtein = Levenshtein().wf
+wfi_levenshtein = Levenshtein().wfi
+damerau_levenshtein = Levenshtein().damerau
 
 
-levenshtein = wfi_levenshtein
-
-# Backward-compatibilty because I misspelled.
-classic_levenschtein = classic_levenshtein
-levenschtein = levenshtein
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
