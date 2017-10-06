@@ -1,6 +1,7 @@
 import itertools
 import unittest
 import pylev
+from pylev import Levenshtein
 
 test_data = [
     ('classic', "kitten", "sitting", 3),
@@ -13,25 +14,22 @@ test_data = [
 ]
 
 test_functions = [
-    # pylev.classic_levenshtein,   # disabled because it is so slow
-    pylev.recursive_levenshtein,
-    pylev.wf_levenshtein,
-    pylev.wfi_levenshtein
+    # Levenshtein().classic, # disabled because it is so slow
+    Levenshtein().recursive,
+    Levenshtein().wf,
+    Levenshtein().wfi,
+    Levenshtein().damerau
 ]
 
-class Tests(unittest.TestCase):
 
-    def test_damerau_levenshtein(seld):
-        assert pylev.damerau_levenshtein("ba", "abc") == 2
-        assert pylev.damerau_levenshtein("foobar", "foobra") == 1
-        assert pylev.damerau_levenshtein("fee", "deed") == 2
+class Tests(unittest.TestCase):
+    pass
 
 
 def _mk_test_fn(fn, a, b, expected):
     def _test_fn(self):
         self.assertEqual(fn(a, b), expected)
         self.assertEqual(fn(b, a), expected)
-
     return _test_fn
 
 
