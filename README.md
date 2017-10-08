@@ -10,6 +10,7 @@ Based off the [Wikipedia code samples](http://en.wikipedia.org/wiki/Levenshtein_
 
 ### Requirements
 * Python Python 3.3+
+* PyPy3
 
 
 ### Usage
@@ -17,6 +18,7 @@ Usage is fairly straightforward:
 
 ```python
     from pylev import Levenshtein
+    # or import pylev and use as usual (for backward compatibility)
 
     lev = Levenshtein()
     distance = lev.wf('kitten', 'sitting')
@@ -53,7 +55,7 @@ New BSD (as authored, no changes).
 
 * v1.2.0
     * Fixed all incorrect spellings of "Levenshtein" (there's no "c" in it).
-    * Old methods are aliased for backward-compatibility.
+    * Old methods are and use as usual (aliased for backward-compatibility.)
 
 * v1.1.0
     * Implemented a much faster variant (several orders of magnitude).
