@@ -18,11 +18,26 @@ Usage is fairly straightforward:
 
 ```python
     from pylev import Levenshtein
-    # or import pylev and use as usual (for backward compatibility)
 
-    lev = Levenshtein()
-    distance = lev.wf('kitten', 'sitting')
-    assert(distance, 3)
+    assert(Levenshtein.classic('', 'cat'), 3)
+    assert(Levenshtein.damerau('cat', 'cat'), 0)
+    assert(Levenshtein.wf('kitten', 'sitting'), 3)
+    assert(Levenshtein.wfi(['cat', 'kitten'], 'abc'), [3, 6])
+    assert(Levenshtein()(['cat', 'kitten'], ['cat', 'abc']), [[0, 3], [5, 6]])
+```
+
+Or use old way:
+```python
+    from pylev import (
+        wf_levenshtein, wfi_levenshtein, damerau_levenshtein,
+        classic_levenshtein
+    )
+
+    assert(classic_levenshtein('', 'cat'), 3)
+    assert(damerau_levenshtein('cat', 'cat'), 0)
+    assert(wf_levenshtein('kitten', 'sitting'), 3)
+    assert(wfi_levenshtein(['cat', 'kitten'], 'abc'), [3, 6])
+    assert(wf_levenshtein(['cat', 'kitten'], ['cat', 'abc']), [[0, 3], [5, 6]])
 ```
 
 
@@ -31,19 +46,18 @@ New BSD (as authored, no changes).
 
 
 ### Tests
-#### Setup
 ```bash
+    # get
     $ git clone https://github.com/hell03end/pylev.git
     $ cd pylev
-```
-
-#### Running
-```bash
+    # run
     $ python -m unittest tests
 ```
 
 
-### Version History
+### Changelog
+* v1.3.3
+    * Pass list of strings into any method to get result vector/matrix
 
 * v1.3.2
     * Add \_\_call\_\_ into Levenshtein class
