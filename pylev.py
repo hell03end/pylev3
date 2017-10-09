@@ -311,6 +311,10 @@ wfi_levenshtein = Levenshtein().wfi
 damerau_levenshtein = Levenshtein().damerau
 
 
+# import only Levenshtein class
+__all__ = ("Levenshtein")
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
