@@ -19,11 +19,11 @@ Usage is fairly straightforward:
 ```python
     from pylev import Levenshtein
 
-    assert(Levenshtein.classic('', 'cat'), 3)
-    assert(Levenshtein.damerau('cat', 'cat'), 0)
-    assert(Levenshtein.wf('kitten', 'sitting'), 3)
-    assert(Levenshtein.wfi(['cat', 'kitten'], 'abc'), [3, 6])
-    assert(Levenshtein()(['cat', 'kitten'], ['cat', 'abc']), [[0, 3], [5, 6]])
+    assert Levenshtein.classic('', 'cat'), 3
+    assert Levenshtein.damerau('cat', 'cat'), 0
+    assert Levenshtein.wf('kitten', 'sitting'), 3
+    assert Levenshtein.wfi(['cat', 'kitten'], 'abc'), [3, 6]
+    assert Levenshtein()(['cat', 'kitten'], ['cat', 'abc']), [[0, 3], [5, 6]]
 ```
 
 Or use old way:
@@ -33,11 +33,11 @@ Or use old way:
         classic_levenshtein
     )
 
-    assert(classic_levenshtein('', 'cat'), 3)
-    assert(damerau_levenshtein('cat', 'cat'), 0)
-    assert(wf_levenshtein('kitten', 'sitting'), 3)
-    assert(wfi_levenshtein(['cat', 'kitten'], 'abc'), [3, 6])
-    assert(wf_levenshtein(['cat', 'kitten'], ['cat', 'abc']), [[0, 3], [5, 6]])
+    assert classic_levenshtein('', 'cat'), 3
+    assert damerau_levenshtein('cat', 'cat'), 0
+    assert wf_levenshtein('kitten', 'sitting'), 3
+    assert wfi_levenshtein(['cat', 'kitten'], 'abc'), [3, 6]
+    assert wf_levenshtein(['cat', 'kitten'], ['cat', 'abc']), [[0, 3], [5, 6]]
 ```
 
 
