@@ -45,6 +45,10 @@ New BSD (as authored, no changes).
 
 ### Version History
 
+* v1.3.2
+    * Add \_\_call\_\_ into Levenshtein class
+    * Divide main module into files
+
 * v1.3.1
     * Reimplemented with Levenshtein class
     * Remove all Python versions except CPython3.3+
