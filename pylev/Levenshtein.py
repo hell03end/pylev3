@@ -5,7 +5,8 @@ class Levenshtein(object):
     def __init__(self):
         super(Levenshtein, self).__init__()
 
-    def classic(self, string_1: str, string_2: str) -> int:
+    @staticmethod
+    def classic(string_1: str, string_2: str) -> int:
         """
             Calculates the Levenshtein distance between two strings.
 
@@ -38,12 +39,13 @@ class Levenshtein(object):
         elif not len_2:
             return len_1
         return min(
-            self.classic(string_1[1:], string_2) + 1,
-            self.classic(string_1, string_2[1:]) + 1,
-            self.classic(string_1[1:], string_2[1:]) + cost,
+            Levenshtein.classic(string_1[1:], string_2) + 1,
+            Levenshtein.classic(string_1, string_2[1:]) + 1,
+            Levenshtein.classic(string_1[1:], string_2[1:]) + cost,
         )
 
-    def recursive(self, string_1: str, string_2: str, len_1: int=None,
+    @staticmethod
+    def recursive(string_1: str, string_2: str, len_1: int=None,
                   len_2: int=None, offset_1: int=0, offset_2: int=0,
                   memo: int=None) -> int:
         """
@@ -84,12 +86,12 @@ class Levenshtein(object):
             cost = 1
 
         dist = min(
-            self.recursive(string_1, string_2, len_1 - 1, len_2,
-                           offset_1 + 1, offset_2, memo) + 1,
-            self.recursive(string_1, string_2, len_1, len_2 - 1,
-                           offset_1, offset_2 + 1, memo) + 1,
-            self.recursive(string_1, string_2, len_1 - 1, len_2 - 1,
-                           offset_1 + 1, offset_2 + 1, memo) + cost
+            Levenshtein.recursive(string_1, string_2, len_1 - 1, len_2,
+                                  offset_1 + 1, offset_2, memo) + 1,
+            Levenshtein.recursive(string_1, string_2, len_1, len_2 - 1,
+                                  offset_1, offset_2 + 1, memo) + 1,
+            Levenshtein.recursive(string_1, string_2, len_1 - 1, len_2 - 1,
+                                  offset_1 + 1, offset_2 + 1, memo) + cost
         )
         memo[key] = dist
         return dist
