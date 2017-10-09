@@ -288,19 +288,19 @@ class Levenshtein(object):
             dprev, d0, d1 = d0, d1, dprev
         return d0[-1]
 
-    # def __call__(self, string_1: str, string_2: str) -> int:
-    #     """
-    #         Usage::
-    #             >>> Levenshtein()('kitten', 'sitting')
-    #             3
-    #             >>> Levenshtein()('kitten', 'kittne')
-    #             1
-    #             >>> Levenshtein()('', '')
-    #             0
-    #             >>> Levenshtein()('', 'abc')
-    #             3
-    #     """
-    #     return self.wfi(string_1, string_2)
+    def __call__(self, string_1: str, string_2: str) -> int:
+        """
+            Usage::
+                >>> Levenshtein()('kitten', 'sitting')
+                3
+                >>> Levenshtein()('kitten', 'kittne')
+                2
+                >>> Levenshtein()('', '')
+                0
+                >>> Levenshtein()('', 'abc')
+                3
+        """
+        return self.wfi(string_1, string_2)
 
 
 # for backward-compatibilty with original pylev
