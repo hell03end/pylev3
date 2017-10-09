@@ -78,7 +78,7 @@ class Levenshtein(object):
                 0
                 >>> Levenshtein().recursive('', '')
                 0
-                >>> Levenshtein().classic('', 'abc')
+                >>> Levenshtein().recursive('', 'abc')
                 3
         """
         if string_1 == string_2:
@@ -130,7 +130,7 @@ class Levenshtein(object):
                 0
                 >>> Levenshtein().wf('', '')
                 0
-                >>> Levenshtein().classic('', 'abc')
+                >>> Levenshtein().wf('', 'abc')
                 3
         """
 
@@ -141,9 +141,9 @@ class Levenshtein(object):
         len_2 = len(string_2) + 1
 
         if not len_1 - 1:
-            return len_2
+            return len_2 - 1
         if not len_2 - 1:
-            return len_1
+            return len_1 - 1
 
         d = [0] * (len_1 * len_2)
 
@@ -179,7 +179,7 @@ class Levenshtein(object):
                 0
                 >>> Levenshtein().wfi('', '')
                 0
-                >>> Levenshtein().classic('', 'abc')
+                >>> Levenshtein().wfi('', 'abc')
                 3
         """
         if string_1 == string_2:
@@ -237,7 +237,7 @@ class Levenshtein(object):
                 1
                 >>> Levenshtein().damerau('', '')
                 0
-                >>> Levenshtein().classic('', 'abc')
+                >>> Levenshtein().damerau('', 'abc')
                 3
         """
         if string_1 == string_2:
@@ -287,6 +287,20 @@ class Levenshtein(object):
                 d1[j + 1] = cost
             dprev, d0, d1 = d0, d1, dprev
         return d0[-1]
+
+    # def __call__(self, string_1: str, string_2: str) -> int:
+    #     """
+    #         Usage::
+    #             >>> Levenshtein()('kitten', 'sitting')
+    #             3
+    #             >>> Levenshtein()('kitten', 'kittne')
+    #             1
+    #             >>> Levenshtein()('', '')
+    #             0
+    #             >>> Levenshtein()('', 'abc')
+    #             3
+    #     """
+    #     return self.wfi(string_1, string_2)
 
 
 # for backward-compatibilty with original pylev
