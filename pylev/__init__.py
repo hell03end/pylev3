@@ -22,11 +22,11 @@ from .Levenshtein import Levenshtein
 
 
 # for backward-compatibilty with original pylev
-classic_levenshtein = Levenshtein().classic
-recursive_levenshtein = Levenshtein().recursive
-wf_levenshtein = Levenshtein().wf
-wfi_levenshtein = Levenshtein().wfi
-damerau_levenshtein = Levenshtein().damerau
+classic_levenshtein = Levenshtein.classic
+recursive_levenshtein = Levenshtein.recursive
+wf_levenshtein = Levenshtein.wf
+wfi_levenshtein = Levenshtein.wfi
+damerau_levenshtein = Levenshtein.damerau
 
 
 # import only Levenshtein class
