@@ -6,17 +6,8 @@ class Levenshtein(object):
         super(Levenshtein, self).__init__()
 
     @staticmethod
-    def _methods() -> dict:
-        return {
-            'classic': Levenshtein._classic,
-            'recursive': Levenshtein._recursive,
-            'wf': Levenshtein._wf,
-            'wfi': Levenshtein._wfi,
-            'damerau': Levenshtein._damerau
-        }
-
-    @staticmethod
-    def _get_distance(obj_1: ..., obj_2: ..., method: str="wfi") -> (int, list):
+    def _get_distance(obj_1: (str, list, tuple), obj_2: (str, list, tuple),
+                      method: str="wfi") -> (int, list):
         '''
             Call correct class method to calculate Levenshtein distance
 
@@ -25,7 +16,7 @@ class Levenshtein(object):
                 ...
             ValueError: Parameters should be str or ordered collection
         '''
-        function = Levenshtein._methods()[method]
+        function = Levenshtein.__dict__[method].__func__
         if isinstance(obj_1, str) and isinstance(obj_2, str):
             return function(obj_1, obj_2)
         elif isinstance(obj_1, (list, tuple)) and \
@@ -86,7 +77,7 @@ class Levenshtein(object):
                 >>> Levenshtein.classic('kit', ['abc', 'kit'])
                 [3, 0]
         """
-        return Levenshtein._get_distance(string_1, string_2, 'classic')
+        return Levenshtein._get_distance(string_1, string_2, '_classic')
 
     @staticmethod
     def _recursive(string_1: str, string_2: str, len_1: int=None,
@@ -149,7 +140,7 @@ class Levenshtein(object):
                 >>> Levenshtein.recursive('kit', ['abc', 'kit'])
                 [3, 0]
         """
-        return Levenshtein._get_distance(string_1, string_2, 'recursive')
+        return Levenshtein._get_distance(string_1, string_2, '_recursive')
 
     @staticmethod
     def _wf(string_1: str, string_2: str) -> int:
@@ -207,7 +198,7 @@ class Levenshtein(object):
                 >>> Levenshtein.wf('kit', ['abc', 'kit'])
                 [3, 0]
         """
-        return Levenshtein._get_distance(string_1, string_2, 'wf')
+        return Levenshtein._get_distance(string_1, string_2, '_wf')
 
     @staticmethod
     def _wfi(string_1: str, string_2: str) -> int:
@@ -273,7 +264,7 @@ class Levenshtein(object):
                 >>> Levenshtein.wfi('kit', ['abc', 'kit'])
                 [3, 0]
         """
-        return Levenshtein._get_distance(string_1, string_2, 'wfi')
+        return Levenshtein._get_distance(string_1, string_2, '_wfi')
 
     @staticmethod
     def _damerau(string_1: str, string_2: str) -> int:
@@ -353,7 +344,7 @@ class Levenshtein(object):
                 >>> Levenshtein.damerau('kit', ['abc', 'kit'])
                 [3, 0]
         """
-        return Levenshtein._get_distance(string_1, string_2, 'damerau')
+        return Levenshtein._get_distance(string_1, string_2, '_damerau')
 
     def __call__(self, string_1: str, string_2: str) -> int:
         """
