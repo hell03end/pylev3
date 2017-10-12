@@ -1,9 +1,10 @@
 import itertools
 import unittest
-import pylev
-from pylev import Levenshtein
 
-test_data = [
+from pylev3 import Levenshtein
+
+
+TEST_DATA = [
     ('classic', "kitten", "sitting", 3),
     ('same', "kitten", "kitten", 0),
     ('empty', "", "", 0),
@@ -13,8 +14,8 @@ test_data = [
     ('d', "CUNsperrICY", "conspiracy", 8),
 ]
 
-test_functions = [
-    # Levenshtein().classic, # disabled because it is so slow
+TEST_FUNCTIONS = [
+    # Levenshtein().classic,  # too slow
     Levenshtein().recursive,
     Levenshtein().wf,
     Levenshtein().wfi,
@@ -33,10 +34,10 @@ def _mk_test_fn(fn, a, b, expected):
     return _test_fn
 
 
-for lev_fn, data in itertools.product(test_functions, test_data):
+for lev_fn, data in itertools.product(TEST_FUNCTIONS, TEST_DATA):
     name, a, b, expected = data
     test_fn = _mk_test_fn(lev_fn, a, b, expected)
-    setattr(Tests, "test_%s_%s" % (name, lev_fn.__name__), test_fn)
+    setattr(Tests, "test_{}_{}".format(name, lev_fn.__name__), test_fn)
 
 
 if __name__ == '__main__':
