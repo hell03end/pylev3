@@ -2,7 +2,7 @@ import itertools
 import unittest
 
 from pylev3 import Levenshtein
-
+from fixtures.corpus import iter_solutions
 
 TEST_DATA = [
     ('classic', "kitten", "sitting", 3),
@@ -24,7 +24,26 @@ TEST_FUNCTIONS = [
 
 
 class Tests(unittest.TestCase):
-    pass
+    def test_damerau_levenshtein(self):
+        assert Levenshtein().damerau("ba", "abc") == 2
+        assert Levenshtein().damerau("foobar", "foobra") == 1
+        assert Levenshtein().damerau("fee", "deed") == 2
+
+    def test_levenshtein_words_corpus(self):
+        for a, b, distance in iter_solutions('word_lev_distances'):
+            assert Levenshtein()(a, b) == distance
+
+    def test_damerau_words_corpus(self):
+        for a, b, distance in iter_solutions('word_dam_distances'):
+            assert Levenshtein().damerau(a, b) == distance
+
+    def test_levenshtein_sentances_corpus(self):
+        for a, b, distance in iter_solutions('sentance_lev_distances'):
+            assert Levenshtein()(a, b) == distance
+
+    def test_damerau_sentances_corpus(self):
+        for a, b, distance in iter_solutions('sentance_dam_distances'):
+            assert Levenshtein().damerau(a, b) == distance
 
 
 def _mk_test_fn(fn, a, b, expected):
