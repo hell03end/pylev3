@@ -1,5 +1,6 @@
 # pylev3
 [![Build Status](https://travis-ci.org/hell03end/pylev.svg?branch=master)](https://travis-ci.org/hell03end/pylev)
+[![PyPI version](https://badge.fury.io/py/pylev3.svg)](https://badge.fury.io/py/pylev3)
 
 A Python3 Levenshtein distance (re)implementation of [pylev](https://github.com/toastdriven/pylev) (fork).
 
