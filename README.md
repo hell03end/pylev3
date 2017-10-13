@@ -4,6 +4,8 @@
 
 A Python3 Levenshtein distance (re)implementation of [pylev](https://github.com/toastdriven/pylev) (fork).
 
+**[What's new?](https://github.com/hell03end/pylev/blob/master/CHANGELOG.md)**
+
 Calculation of Levenshtein distance between strings.
 Based on the [Wikipedia code samples](http://en.wikipedia.org/wiki/Levenshtein_distance).
 
