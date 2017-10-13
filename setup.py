@@ -12,7 +12,7 @@ except ImportError:
 setup(
     name="pylev3",
     packages=packages,
-    version="1.0.0",
+    version="1.0.1b",
     description="A Python3 Levenshtein distance (re)implementation of pylev",
     long_description=open(
         os.path.join(os.path.dirname(__file__), "README.md"), 'r'
