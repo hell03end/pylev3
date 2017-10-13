@@ -1,5 +1,7 @@
 ''' Main Levenshtein class (contain all functions as methods) '''
 
+from functools import lru_cache
+
 
 class Levenshtein(object):
     def __init__(self):
@@ -7,14 +9,18 @@ class Levenshtein(object):
 
     @staticmethod
     def _get_distance(obj_1: (str, list, tuple), obj_2: (str, list, tuple),
-                      method: str="wfi") -> (int, list):
+                      method: str) -> (int, list):
         '''
             Call correct class method to calculate Levenshtein distance
 
-            >>> Levenshtein._get_distance("abc", {"abc"})
+            >>> Levenshtein._get_distance("abc", {"abc"}, "_classic")
             Traceback (most recent call last):
                 ...
             ValueError: Parameters should be str or ordered collection
+            >>> Levenshtein._get_distance("abc", {"abc"})
+            Traceback (most recent call last):
+                ...
+            TypeError: _get_distance() missing 1 required positional argument: 'method'
         '''
         function = Levenshtein.__dict__[method].__func__
         if isinstance(obj_1, str) and isinstance(obj_2, str):
@@ -143,6 +149,7 @@ class Levenshtein(object):
         return Levenshtein._get_distance(string_1, string_2, '_recursive')
 
     @staticmethod
+    @lru_cache(maxsize=128)
     def _wf(string_1: str, string_2: str) -> int:
         if string_1 == string_2:
             return 0
@@ -201,6 +208,7 @@ class Levenshtein(object):
         return Levenshtein._get_distance(string_1, string_2, '_wf')
 
     @staticmethod
+    @lru_cache(maxsize=128)
     def _wfi(string_1: str, string_2: str) -> int:
         if string_1 == string_2:
             return 0
@@ -267,6 +275,7 @@ class Levenshtein(object):
         return Levenshtein._get_distance(string_1, string_2, '_wfi')
 
     @staticmethod
+    @lru_cache(maxsize=128)
     def _damerau(string_1: str, string_2: str) -> int:
         if string_1 == string_2:
             return 0
@@ -346,18 +355,19 @@ class Levenshtein(object):
         """
         return Levenshtein._get_distance(string_1, string_2, '_damerau')
 
-    def __call__(self, string_1: str, string_2: str) -> int:
+    def __call__(self, string_1: (str, (list, tuple)),
+                 string_2: (str, (list, tuple)), method: str="wfi") -> int:
         """
             Calculate Levenshtein distance with wfi method
 
             Usage::
                 >>> Levenshtein()('kitten', 'sitting')
                 3
-                >>> Levenshtein()('kitten', 'kittne')
+                >>> Levenshtein()('kitten', 'kittne', method='wf')
                 2
                 >>> Levenshtein()('', '')
                 0
-                >>> Levenshtein()('', 'abc')
+                >>> Levenshtein()('', 'abc', 'damerau')
                 3
                 >>> Levenshtein()(['abc', 'kit'], ['abs', 'kit'])
                 [[1, 3], [3, 0]]
@@ -365,8 +375,15 @@ class Levenshtein(object):
                 [0, 3]
                 >>> Levenshtein()('kit', ['abc', 'kit'])
                 [3, 0]
+                >>> Levenshtein()('', '', method='sort')
+                Traceback (most recent call last):
+                    ...
+                ValueError: Wrong method 'sort'
         """
-        return Levenshtein.wfi(string_1, string_2)
+        method = "_{}".format(method)
+        if method not in self.__class__.__dict__:
+            raise ValueError("Wrong method '{}'".format(method[1:]))
+        return self._get_distance(string_1, string_2, method)
 
 
 if __name__ == "__main__":
