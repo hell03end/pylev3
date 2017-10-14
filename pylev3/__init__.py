@@ -1,3 +1,21 @@
+'''
+    pylev3
+    ======
+
+    A Python3 Levenshtein distance (re)implementation of pylev (fork).
+    Calculation of Levenshtein distance between strings.
+
+    Usage
+    -----
+
+    from pylev import Levenshtein
+    assert Levenshtein.classic('', 'cat'), 3
+    assert Levenshtein.damerau('cat', 'cat'), 0
+    assert Levenshtein.wf('kitten', 'sitting'), 3
+    assert Levenshtein.wfi(['cat', 'kitten'], 'abc'), [3, 6]
+    assert Levenshtein()(['cat', 'car'], ['cat', 'abc']), [[0, 3], [1, 3]]
+'''
+
 import os
 from .Levenshtein import Levenshtein
 
@@ -10,9 +28,7 @@ wfi_levenshtein = Levenshtein.wfi
 damerau_levenshtein = Levenshtein.damerau
 
 
-# copy documentation from README
-__doc__ = open(os.path.join(os.path.abspath("."), "README.md"), 'r').read()
 __all__ = ("Levenshtein")  # import only Levenshtein class
 __author__ = ("hell03end", "Daniel Lindsley")
-__version__ = (1, 0, 0)
+__version__ = (1, 0, 2)
 __license__ = "New BSD"  # as authored

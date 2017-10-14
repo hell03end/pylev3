@@ -1,6 +1,10 @@
 # Version History
 
 ## pylev3 changelog
+* v1.0.1
+    * add caching for non recursive Levenshtein implementations
+    * add method selection for Levenshtein class call as function
+
 * v1.0.0
     * renamed to pylev3
     * add hell03end to license
