@@ -1,6 +1,9 @@
 # Version History
 
 ## pylev3 changelog
+* v1.0.2
+    * fix bug with dockstring in pylev3 module
+
 * v1.0.1
     * add caching for non recursive Levenshtein implementations
     * add method selection for Levenshtein class call as function
