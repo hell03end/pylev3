@@ -1,12 +1,12 @@
 pylev3
 ======
 
-.. image:: https://travis-ci.org/hell03end/pylev.svg?branch=master
-    :target: https://travis-ci.org/hell03end/pylev
+.. image:: https://travis-ci.org/hell03end/pylev3.svg?branch=master
+    :target: https://travis-ci.org/hell03end/pylev3
 .. image:: https://badge.fury.io/py/pylev3.svg
     :target: https://badge.fury.io/py/pylev3
 
-A Python3 Levenshtein distance (re)implementation of pylev_ (fork).
+A Python3 Levenshtein distance (re)implementation of pylev_.
 
 Calculation of Levenshtein distance between strings.
 Based on the `Wikipedia code samples`_.
@@ -16,7 +16,7 @@ Based on the `Wikipedia code samples`_.
 
 `What's new?`__
 
-__ https://github.com/hell03end/pylev/blob/master/CHANGELOG.md
+__ https://github.com/hell03end/pylev3/wiki/Changelog
 
 
 Requirements
@@ -40,7 +40,7 @@ Usage is fairly straightforward:
 
 .. code-block:: python
 
-    from pylev import Levenshtein
+    from pylev3 import Levenshtein
     assert Levenshtein.classic('', 'cat'), 3
     assert Levenshtein.damerau('cat', 'cat'), 0
     assert Levenshtein.wf('kitten', 'sitting'), 3
@@ -51,7 +51,7 @@ Or use old way (like in pylev):
 
 .. code-block:: python
 
-    from pylev import wf_levenshtein, wfi_levenshtein, damerau_levenshtein, classic_levenshtein
+    from pylev3 import wf_levenshtein, wfi_levenshtein, damerau_levenshtein, classic_levenshtein
     assert classic_levenshtein('', 'cat'), 3
     assert damerau_levenshtein('cat', 'cat'), 0
     assert wf_levenshtein('kitten', 'sitting'), 3
@@ -62,7 +62,7 @@ Or use old way (like in pylev):
 License
 -------
 
-New BSD (as authored, no changes :( ).
+New BSD (as authored).
 
 
 Tests
@@ -71,14 +71,7 @@ Tests
 .. code-block:: bash
 
     # get
-    $ git clone https://github.com/hell03end/pylev.git
-    $ cd pylev
+    $ git clone https://github.com/hell03end/pylev3.git
+    $ cd pylev3
     # run
     $ python -m unittest tests
-
-
-ToDo
-----
-
-* add extension for distance calculation on C/C++ (preferably C)
-* update tests & benchmarks

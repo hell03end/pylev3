@@ -2,7 +2,7 @@
     pylev3
     ======
 
-    A Python3 Levenshtein distance (re)implementation of pylev (fork).
+    A Python3 Levenshtein distance (re)implementation of pylev.
     Calculation of Levenshtein distance between strings.
 
     Usage
