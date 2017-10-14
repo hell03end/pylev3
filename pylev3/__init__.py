@@ -30,5 +30,5 @@ damerau_levenshtein = Levenshtein.damerau
 
 __all__ = ("Levenshtein")  # import only Levenshtein class
 __author__ = ("hell03end", "Daniel Lindsley")
-__version__ = (1, 0, 2)
+__version__ = (1, 0, 3)
 __license__ = "New BSD"  # as authored
