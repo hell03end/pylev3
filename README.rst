@@ -7,6 +7,7 @@ pylev3
     :target: https://badge.fury.io/py/pylev3
 
 A Python3 Levenshtein distance (re)implementation of pylev_ (fork).
+
 Calculation of Levenshtein distance between strings.
 Based on the `Wikipedia code samples`_.
 
@@ -49,6 +50,7 @@ Usage is fairly straightforward:
 Or use old way (like in pylev):
 
 .. code-block:: python
+
     from pylev import wf_levenshtein, wfi_levenshtein, damerau_levenshtein, classic_levenshtein
     assert classic_levenshtein('', 'cat'), 3
     assert damerau_levenshtein('cat', 'cat'), 0
