@@ -12,7 +12,7 @@ except ImportError:
 setup(
     name="pylev3",
     packages=packages,
-    version="1.0.2",
+    version="1.1.0",
     description="A Python3 Levenshtein distance (re)implementation of pylev",
     long_description=open(os.path.join(os.path.dirname(__file__),
                                        "README.rst")).read(),
@@ -24,7 +24,7 @@ setup(
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Education",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
