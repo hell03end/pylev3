@@ -15,6 +15,8 @@ class Levenshtein(Singleton):
         '''
             Call correct class method to calculate Levenshtein distance
 
+            >>> Levenshtein() is Levenshtein()
+            True
             >>> Levenshtein._get_distance("abc", {"abc"}, "_classic")
             Traceback (most recent call last):
                 ...
