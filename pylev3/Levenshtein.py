@@ -2,8 +2,10 @@
 
 from functools import lru_cache
 
+from .base import Singleton
 
-class Levenshtein(object):
+
+class Levenshtein(Singleton):
     def __init__(self):
         super(Levenshtein, self).__init__()
 
