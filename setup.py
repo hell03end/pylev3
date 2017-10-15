@@ -18,7 +18,7 @@ setup(
                                        "README.rst")).read(),
     author="hell03end",
     author_email="hell03end@outlook.com",
-    url="https://github.com/hell03end/pylev",
+    url="https://github.com/hell03end/pylev3",
     keywords="Levenshtein texts",
     classifiers=[
         "Intended Audience :: Developers",
