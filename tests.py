@@ -24,7 +24,9 @@ TEST_FUNCTIONS = [
 
 
 class Tests(unittest.TestCase):
-    pass
+    def test_singleton(self):
+        lev1, lev2 = Levenshtein(), Levenshtein()
+        self.assertIs(lev1, lev2)
 
 
 def _mk_test_fn(fn, a, b, expected):
