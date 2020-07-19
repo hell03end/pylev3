@@ -16,7 +16,6 @@
     assert Levenshtein()(['cat', 'car'], ['cat', 'abc']), [[0, 3], [1, 3]]
 '''
 
-import os
 from .Levenshtein import Levenshtein
 
 
